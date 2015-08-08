@@ -1,6 +1,5 @@
 package fr.adrean.Survivor;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -94,7 +93,6 @@ public class Exchange {
 			gui.disable();
 			if (gui.getHolder() instanceof Player) {
 				Player p = (Player) gui.getHolder();
-				Bukkit.broadcastMessage(p.getName());
 				for (byte b = 0; b < 9; b++) {
 					ItemStack is = getItemStack(b, p);
 					if (is != null) {

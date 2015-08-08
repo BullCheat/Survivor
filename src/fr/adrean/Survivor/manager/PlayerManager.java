@@ -518,6 +518,7 @@ public class PlayerManager implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerIntentExchange(PlayerInteractAtEntityEvent e) {
+		if (!e.getPlayer().isSneaking()) return;
 		Player rc = (Player) e.getRightClicked();
 		if (e.getRightClicked() instanceof Player) {
 			for (TradeRequest tr : new ArrayList<TradeRequest>(Core.playerTradeRequests)) {
