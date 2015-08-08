@@ -1,5 +1,6 @@
 package fr.adrean.Survivor;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -84,8 +85,29 @@ public class Exchange {
 		return guis[getPlayerID(p)];
 	}
 	
-	public ExchangeGUI[] getGUIs() {
+	public ExchangeGUI[] getGUIs() {	
 		return this.guis;
+	}
+
+	public void abort() {
+		for (ExchangeGUI gui : guis) {
+			gui.disable();
+			if (gui.getHolder() instanceof Player) {
+				Player p = (Player) gui.getHolder();
+				Bukkit.broadcastMessage(p.getName());
+				for (byte b = 0; b < 9; b++) {
+					ItemStack is = getItemStack(b, p);
+					if (is != null) {
+						if (p.getInventory().firstEmpty() >= 0) {
+							p.getInventory().addItem(is.clone());
+						} else {
+							p.getWorld().dropItemNaturally(p.getLocation(), is.clone());
+						}
+					}
+				}
+				p.closeInventory();
+			}
+		}
 	}
 
 }

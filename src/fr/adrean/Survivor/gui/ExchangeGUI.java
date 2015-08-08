@@ -21,7 +21,7 @@ public class ExchangeGUI extends GUI {
 	//private Core plugin;
 
 	public ExchangeGUI(Player player, Exchange exchange, Core plugin, Player oplayer) {
-		super(null, 9*6, "Échange - " + oplayer.getName(), plugin, player);
+		super(player, 9*6, "Échange - " + oplayer.getName(), plugin, player);
 		this.p = player;
 		this.e = exchange;
 		//this.plugin = plugin;
@@ -88,30 +88,18 @@ public class ExchangeGUI extends GUI {
 		return e.getGUI(otherPlayer);
 	}
 	
+	@Override
 	@EventHandler
-	public void onPlayerCloseIt(InventoryCloseEvent e) {
+	public void onPlayerCloseGUI(InventoryCloseEvent e) {
 		if (this.disabled) return;
-		this.disabled = true;
+		Bukkit.broadcastMessage(e.getInventory().hashCode() + " " + this.hashCode());
 		if (e.getInventory().hashCode() == this.hashCode()) {
-			getOtherGUI().close();
+			this.e.abort();
 		}
 	}
-
-	private void close() {
-		if (this.disabled) return;
-		this.disabled = true;
-		if (p.getOpenInventory() != null) {
-			p.closeInventory();
-		}
-		for (byte b = 0; b < 9; b++) {
-			ItemStack is = e.getItemStack(b, p);
-			if (is == null) continue;
-			if (p.getInventory().firstEmpty() >= 0) {
-				p.getInventory().addItem(is.clone());
-			} else {
-				p.getWorld().dropItemNaturally(p.getLocation(), is.clone());
-			}
-		}
+	
+	@EventHandler
+	public void onPlayerCloseIt(InventoryCloseEvent e) {
 		
 	}
 }
