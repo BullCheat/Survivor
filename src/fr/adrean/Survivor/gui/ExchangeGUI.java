@@ -93,19 +93,16 @@ public class ExchangeGUI extends GUI {
 		if (this.disabled) return;
 		this.disabled = true;
 		if (e.getInventory().hashCode() == this.hashCode()) {
-			Bukkit.broadcastMessage("Inventory closed");
-			for (ExchangeGUI gui : this.e.getGUIs()) {
-				gui.close();
-			}
+			getOtherGUI().close();
 		}
 	}
 
 	private void close() {
 		if (this.disabled) return;
+		this.disabled = true;
 		if (p.getOpenInventory() != null) {
 			p.closeInventory();
 		}
-		this.disabled = true;
 		for (byte b = 0; b < 9; b++) {
 			ItemStack is = e.getItemStack(b, p);
 			if (is == null) continue;
