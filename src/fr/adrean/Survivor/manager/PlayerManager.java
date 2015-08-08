@@ -1,10 +1,12 @@
 package fr.adrean.Survivor.manager;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 
+import mkremins.fanciful.FancyMessage;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 
-import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -47,11 +49,13 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import fr.adrean.BlueCore.BlueCore;
 import fr.adrean.Survivor.ChestSpawner;
 import fr.adrean.Survivor.Core;
-import fr.adrean.Survivor.Exchange;
 import fr.adrean.Survivor.Core.AuraType;
+import fr.adrean.Survivor.Exchange;
 import fr.adrean.Survivor.ShopType;
+import fr.adrean.Survivor.TradeRequest;
 import fr.adrean.Survivor.gui.ShopGUI;
 import fr.adrean.Survivor.territory.Territory;
 
@@ -180,13 +184,13 @@ public class PlayerManager implements Listener {
 							if (is.getType().equals(Material.AIR)) continue;
 							return;
 						}
-						Bukkit.getScheduler().runTaskLater(this.plugin, new Runnable() {
+						new BukkitRunnable() {
 							@Override
 							public void run() {
 								c.deSpawn(true);
 								c.schedule();
 							}
-						}, 20);
+						}.runTaskLater(this.plugin, 20);
 						return;
 					}
 				} 
@@ -335,11 +339,11 @@ public class PlayerManager implements Listener {
 				damager.playSound(damaged.getLocation(), Sound.AMBIENCE_THUNDER, 1, 1);
 				damager.playSound(damaged.getLocation(), Sound.AMBIENCE_THUNDER, 1, 1);
 				final Player p = damager; 
-				Bukkit.getScheduler().runTaskLater(this.plugin, new Runnable() {
+				new BukkitRunnable() {
 					public void run() {
 						p.playSound(p.getLocation(), Sound.AMBIENCE_THUNDER, 1, 1);
 					}
-				}, 1);
+				}.runTaskLater(plugin, 2);
 			}
 		}
 	}
@@ -364,7 +368,7 @@ public class PlayerManager implements Listener {
 									p.getItemInHand().setAmount(p.getItemInHand().getAmount() - 1);
 								}
 							} catch (Exception e1) {
-								Bukkit.getLogger().log(Level.SEVERE, "[Survivor] ERREUR ITEMNBTTAG !!!!!");
+								plugin.getLogger().log(Level.SEVERE, "ERREUR ITEMNBTTAG !!!!!");
 								e1.printStackTrace();
 								p.sendMessage("\u00a7cOups, petite erreur...");
 								ItemStack i = p.getItemInHand();
@@ -442,14 +446,14 @@ public class PlayerManager implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerConsume(final PlayerItemConsumeEvent e) {
 		if (e.getItem().getType().equals(Material.MILK_BUCKET)) {
-			Bukkit.getScheduler().runTaskLater(Bukkit.getPluginManager().getPlugin("Survivor"), new Runnable() {
+			new BukkitRunnable() {
 				@Override
 				public void run() {
 					if (e.getPlayer().getItemInHand().getType().equals(Material.BUCKET)) {
 						e.getPlayer().setItemInHand(null);
 					}
 				}
-			}, 1);
+			}.runTaskLater(plugin, 1);
 		}
 	}
 	
@@ -514,8 +518,17 @@ public class PlayerManager implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerIntentExchange(PlayerInteractAtEntityEvent e) {
+		Player rc = (Player) e.getRightClicked();
 		if (e.getRightClicked() instanceof Player) {
-			new Exchange(e.getPlayer(), (Player) e.getRightClicked(), plugin).openGUIs();
+			for (TradeRequest tr : new ArrayList<TradeRequest>(Core.playerTradeRequests)) {
+				if (tr.isValid(e.getPlayer().getUniqueId(), rc.getUniqueId())) {
+					new Exchange(e.getPlayer(), rc, plugin).openGUIs();
+					return;
+				}
+			}
+			Core.playerTradeRequests.add(new TradeRequest(e.getPlayer().getUniqueId(), rc.getUniqueId(), 5000));
+			BlueCore.getFancyName(new FancyMessage("Demande envoyée à ").color(ChatColor.GREEN), rc, e.getPlayer()).send(e.getPlayer());;
+			BlueCore.getFancyName(new FancyMessage("Vous avez reçu une demande de ").color(ChatColor.GOLD), e.getPlayer(), rc).send(rc);;
 		}
 	}
 	

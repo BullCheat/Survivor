@@ -77,6 +77,7 @@ public class Core extends JavaPlugin {
 	public static Click[] cheatSequence = new Click[] { Click.LEFT, Click.RIGHT, Click.LEFT, Click.RIGHT, Click.LEFT, Click.LEFT, Click.LEFT, Click.RIGHT };
 	public static HashMap<UUID, Long> playerLastClick = new HashMap<UUID, Long>();
 	public static HashMap<UUID, ArrayList<Click>> playerClicks = new HashMap<UUID, ArrayList<Click>>();
+	public static ArrayList<TradeRequest> playerTradeRequests = new ArrayList<TradeRequest>();
 	
 	@Override
 	public void onEnable() {
