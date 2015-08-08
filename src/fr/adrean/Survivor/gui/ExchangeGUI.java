@@ -1,5 +1,6 @@
 package fr.adrean.Survivor.gui;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -90,7 +91,9 @@ public class ExchangeGUI extends GUI {
 	@EventHandler
 	public void onPlayerCloseIt(InventoryCloseEvent e) {
 		if (this.disabled) return;
+		this.disabled = true;
 		if (e.getInventory().hashCode() == this.hashCode()) {
+			Bukkit.broadcastMessage("Inventory closed");
 			for (ExchangeGUI gui : this.e.getGUIs()) {
 				gui.close();
 			}
@@ -105,6 +108,7 @@ public class ExchangeGUI extends GUI {
 		this.disabled = true;
 		for (byte b = 0; b < 9; b++) {
 			ItemStack is = e.getItemStack(b, p);
+			if (is == null) continue;
 			if (p.getInventory().firstEmpty() >= 0) {
 				p.getInventory().addItem(is.clone());
 			} else {
