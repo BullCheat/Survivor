@@ -91,8 +91,9 @@ public class ExchangeGUI extends GUI {
 	public void onPlayerCloseIt(InventoryCloseEvent e) {
 		if (this.disabled) return;
 		if (e.getInventory().hashCode() == this.hashCode()) {
-			this.close();
-			getOtherGUI().close();
+			for (ExchangeGUI gui : this.e.getGUIs()) {
+				gui.close();
+			}
 		}
 	}
 

@@ -83,5 +83,9 @@ public class Exchange {
 	public ExchangeGUI getGUI(Player p) {
 		return guis[getPlayerID(p)];
 	}
+	
+	public ExchangeGUI[] getGUIs() {
+		return this.guis;
+	}
 
 }
