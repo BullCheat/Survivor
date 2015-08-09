@@ -34,7 +34,7 @@ public abstract class TerritoryGUI extends GUI {
 		if (territory.getOwner() == null) {
 			lore.add("\u00a77Cet emplacement est libre !");
 		} else {
-			if (territory.getOwner().equals(this.player)) {
+			if (territory.getOwner().getUniqueId().equals(this.player.getUniqueId())) {
 				lore.add("\u00a77Cet emplacement vous appartient");
 			} else {
 				lore.add("\u00a77Propriétaire : \u00a7a" + territory.getOwner().getName());

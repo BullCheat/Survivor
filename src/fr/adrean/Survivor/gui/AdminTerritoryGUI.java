@@ -224,7 +224,7 @@ public class AdminTerritoryGUI extends TerritoryGUI {
 	private ItemStack getSurclaimButton() {
 		ItemStack dye = new ItemStack(Material.INK_SACK, 1, (short) 8);
 		ItemMeta meta = dye.getItemMeta();
-		if (player.equals(territory.getOwner())) {
+		if (player.getUniqueId().equals(territory.getOwner().getUniqueId())) {
 			dye.setDurability((short) 13);
 			meta.setDisplayName("\u00a7cCe terrain vous appartient");
 		} else {
