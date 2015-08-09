@@ -59,7 +59,7 @@ public class PlayerTerritoryGUI extends TerritoryGUI {
 		long x = territory.getWaitingXP(false);
 		meta.setDisplayName("\u00a7c" + x + " \u00a7a" + (x > 1 ? territory.getXPMaterialName()[1] : territory.getXPMaterialName()[0]) +" en attente");
 		ArrayList<String> lore = new ArrayList<String>();
-		if (territory.getOwner() != null && territory.getOwner().equals(player)) {
+		if (territory.getOwner() != null && territory.getOwner().getUniqueId().equals(player.getUniqueId())) {
 			lore.add("\u00a77Cliquez pour récupérer");	
 		} else {
 			lore.add("\u00a77Capturez ce territoire pour récupérer");
@@ -111,7 +111,7 @@ public class PlayerTerritoryGUI extends TerritoryGUI {
 			meta.setDisplayName("\u00a7aObtenir ce territoire");
 			lore.add("\u00a76Clic droit + sneak \u00a77pour obtenir ce territoire");
 			lore.add("\u00a77Coût : \u00a7c" + territory.getSurclaimCost() + " \u00a77niveau" + (territory.getSurclaimCost() > 1 ? "x" : "") + " d'expérience");
-		} else if (territory.getOwner().equals(player)) {
+		} else if (territory.getOwner().getUniqueId().equals(player.getUniqueId())) {
 			wool.setDurability((short) 5);
 			meta.setDisplayName("\u00a7aAjouter de l'expérience");
 			lore.add("\u00a76Clic gauche \u00a77pour ajouter \u00a761 \u00a77niveau d'expérience");
@@ -168,7 +168,7 @@ public class PlayerTerritoryGUI extends TerritoryGUI {
 	}
 
 	private void handleXPClick() {
-		if (player.equals(territory.getOwner())) {
+		if (player.getUniqueId().equals(territory.getOwner().getUniqueId())) {
 			int res = (int) this.territory.getWaitingXP(false);
 			if (res > 0) {
 				yes();
@@ -190,7 +190,7 @@ public class PlayerTerritoryGUI extends TerritoryGUI {
 	}
 
 	private void handleGreenWoolClick(boolean leftClick, boolean shiftClick) {
-		if (territory.getOwner() != null && territory.getOwner().equals(player)) {
+		if (territory.getOwner() != null && territory.getOwner().getUniqueId().equals(player.getUniqueId())) {
 			byte cost = (byte) (leftClick ? 1 : !shiftClick ? 5 : 10);
 			if (player.getLevel() < 1) {
 				no();
