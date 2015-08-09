@@ -9,6 +9,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import fr.adrean.BlueCore.BlueCore;
 import fr.adrean.Survivor.Core;
 import fr.adrean.Survivor.territory.Territory;
 
@@ -37,7 +38,7 @@ public abstract class TerritoryGUI extends GUI {
 			if (territory.getOwner().getUniqueId().equals(this.player.getUniqueId())) {
 				lore.add("\u00a77Cet emplacement vous appartient");
 			} else {
-				lore.add("\u00a77Propriétaire : \u00a7a" + territory.getOwner().getName());
+				lore.add("\u00a77Propriétaire : " + BlueCore.getColorName(territory.getOwner()));
 			}
 		}
 		lore.add("\u00a77Production " + territory.getXPMaterialName()[2] + " par heure : \u00a7a" + territory.getXPProdPerHour());
