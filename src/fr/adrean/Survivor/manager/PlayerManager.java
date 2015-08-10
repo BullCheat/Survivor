@@ -468,6 +468,7 @@ public class PlayerManager implements Listener {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	//AntiHopperMove
 	public void onPlayerClick(InventoryClickEvent e) {
@@ -476,6 +477,7 @@ public class PlayerManager implements Listener {
 			((Player) e.getWhoClicked()) .updateInventory();
 			if (e.getCursor() != null && e.getCursor().getType() != Material.AIR)
 				e.getWhoClicked().getWorld().dropItemNaturally(e.getWhoClicked().getLocation(), e.getCursor().clone());
+				e.setCursor(null);
 		}
 	}
 	
