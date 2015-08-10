@@ -172,6 +172,7 @@ public class PlayerTerritoryGUI extends TerritoryGUI {
 			int res = (int) this.territory.getWaitingXP(false);
 			if (res > 0) {
 				yes();
+				player.sendMessage("§aVous avez récupéré " + res + " " + (res > 1 ? territory.getXPMaterialName()[1] : territory.getXPMaterialName()[0]) + " !");
 				if (this.territory instanceof Mine) {
 					ResourceManager.addGold(player, res);
 				} else if (this.territory instanceof Ferme) {
